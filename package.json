@@ -1,0 +1,19 @@
+{
+  "name": "kiddb",
+  "description": "a database where everything is a single file",
+  "version": "0.0.0",
+  "homepage": "https://github.com/dominictarr/kiddb",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dominictarr/kiddb.git"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "test": "set -e; for t in test/*.js; do node $t; done"
+  },
+  "author": "'Dominic Tarr' <dominic.tarr@gmail.com> (http://dominictarr.com)",
+  "license": "MIT"  
+}
