@@ -35,3 +35,35 @@ tape('simple', function (t) {
     })
   })
 })
+
+tape('multi write', function (t) {
+
+  var dirname = path.join(tmpdir, 'test-kiddb2')
+  rimraf(dirname, function () {
+    var kid = Kid(dirname)
+    kid.open(function (err) {
+      var n = 3
+      kid.put('foo', 'FOO', next)
+      kid.put('bar', 'BAR', next)
+      kid.put('baz', 'BAZ', next)
+      function next (err) {
+        if(err) throw err
+        if(--n) return
+        kid.get('foo', function (err, value) {
+          if(err) throw err
+          t.equal(value, 'FOO')
+          kid.get('bar', function (err, value) {
+            if(err) throw err
+            t.equal(value, 'BAR')
+            kid.get('baz', function (err, value) {
+              if(err) throw err
+              t.equal(value, 'BAZ')
+              t.end()
+            })
+          })
+        })
+      }
+    })
+  })
+
+})
