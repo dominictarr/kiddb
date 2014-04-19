@@ -58,7 +58,7 @@ module.exports = function (filename, opts) {
     // there is only one file, so there cannot be concurrent writes, throw
     // if they try to write concurrently.
 
-    update: function (_data, cb) {
+    _update: function (_data, cb) {
       if(!db.data) return cb(new Error('kiddb not open'))
       if(writing) throw new Error('currently writing!')
       writing = true
@@ -80,8 +80,9 @@ module.exports = function (filename, opts) {
     //these can probably be merged together, and then a bunch will succeed at once.
     //if you contrived your benchmark the right way, this could look like really great performance!
 
-    queueUpdate: function (_data, cb) {
+    update: function (_data, cb) {
       if(!db.data) return cb(new Error('kiddb not open'))
+      if(!writing) return db._update(_data, cb)
       db.__data = _data
       qcb.push(cb)
       onWrote = function () {
@@ -120,15 +121,14 @@ module.exports = function (filename, opts) {
     batch: function (batch, opts, cb) {
       if(!cb) cb = opts, opts = {}
       if(!db.data) return cb(new Error('kiddb not open'))
-      var obj = copy(db.__data || db.data)
+      var obj = copy(db.__data || db._data)
       batch.forEach(function (op) {
         if(op.type == 'put')
           obj[op.key] = op.value
         else
           delete obj[op.key]
       })
-      if(!writing) db.update(obj, cb)
-      else         db.queueUpdate(obj, cb)
+      db.update(obj, cb)
     },
 
     close: function (cb) {
