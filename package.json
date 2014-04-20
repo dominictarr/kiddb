@@ -7,13 +7,15 @@
     "type": "git",
     "url": "git://github.com/dominictarr/kiddb.git"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
+    "tape": "~2.12.3",
+    "rimraf": "~2.2.6",
+    "osenv": "~0.0.3"
   },
   "scripts": {
     "test": "set -e; for t in test/*.js; do node $t; done"
   },
   "author": "'Dominic Tarr' <dominic.tarr@gmail.com> (http://dominictarr.com)",
-  "license": "MIT"  
+  "license": "MIT"
 }
