@@ -1,4 +1,3 @@
-
 var fs = require('fs')
 var path = require('path')
 
@@ -63,7 +62,7 @@ module.exports = function (filename, opts) {
       if(writing) throw new Error('currently writing!')
       writing = true
       db._data = _data
-      console.log('writing', _data)
+
       fs.writeFile(_filename, JSON.stringify(_data, null, 2)+'\n', function (err) {
         if(err) return cb(err)
         fs.rename(_filename, filename, function (err) {
